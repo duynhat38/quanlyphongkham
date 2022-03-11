@@ -1,4 +1,6 @@
 const User = require('../models/models.user');
+const bcrypt = require('bcrypt');
+const hashPassword = require('../functions/hashPassword');
 
 module.exports.index = async function(req, res) {
     try {
@@ -49,11 +51,12 @@ module.exports.delete_user = async function(req, res) {
 
 module.exports.change_password = async function(req, res) {
     try {
-        const user = res.locals.user;
+        var user = res.locals.user;
         const data = JSON.parse(JSON.stringify(req.body));
         const password = data.password;
         const password_new = data.password_new;
         if (user) {
+            user = await User.findById(user._id);
             const hashedPassword = user.hashedPassword;
             const checkPassword = await bcrypt.compareSync(password, hashedPassword);
             if (checkPassword) {
@@ -74,6 +77,7 @@ module.exports.change_password = async function(req, res) {
             return res.status(400).send({ error: true, message: 'Tài khoản chưa tồn tại !!!' });
         }
     } catch (err) {
+        console.log(err)
         return res.status(500).json({ error: true, message: 'Xảy ra lỗi trong quá trình đổi mật khẩu !!!' });
     }
 }
