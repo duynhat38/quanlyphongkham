@@ -1,46 +1,26 @@
 const jwt = require('../functions/jwt.js');
-const User = require('../models/models.user');
+const Users = require('../models/models.users');
 
-module.exports.user = async function(req, res, next) {
-    try {
-        var token = req.headers['x-access-token'];
-        // giải mã token
-        var decodePayload = await jwt.decode(token)
-        if (decodePayload.success) {
-            const payload = decodePayload.decodePayload;
-            const user = await User.findById(payload._id, ['_id', 'email', 'username'])
-            if (user) {
-                res.locals.user = user;
-                next();
-            } else {
-                res.status(400).json({ error: true, message: 'Không tồn tại người dùng !!!' })
-            }
-        } else {
-            res.status(400).json({ error: true, message: 'Failed to valid token !!!' })
-        }
-    } catch (err) { res.status(500).json({ error: true, message: 'Lỗi xác thực token !!!' }) }
-}
-
-module.exports.admin = async function(req, res, next) {
-    try {
-        var token = req.headers['x-access-token'];
-        // giải mã token
-        var decodePayload = await jwt.decode(token)
-        if (decodePayload.success) {
-            const payload = decodePayload.decodePayload;
-            const user = await User.findById(payload._id, ['_id', 'email', 'username', 'role'])
-            if (user) {
-                if (user.role === 'admin') {
+module.exports.authPermission = permission => {
+    return async(req, res, next) => {
+        try {
+            var token = req.headers['x-access-token'];
+            var decodePayload = await jwt.decode(token);
+            if (decodePayload.success) {
+                const payload = decodePayload.decodePayload;
+                const user = await Users.findById(payload._id, ['_id', 'email', 'role'])
+                if (!user) {
+                    return res.status(400).json({ error: true, message: 'Không tồn tại người dùng !!!' })
+                }
+                if (permission.includes(user.role)) {
                     res.locals.user = user;
                     next();
                 } else {
-                    res.status(400).json({ error: true, message: 'Bạn không có quyền truy cập !!!' })
+                    return res.status(400).json({ error: true, message: 'Bạn không có quyền truy cập !!!' })
                 }
             } else {
-                res.status(400).json({ error: true, message: 'Không tồn tại người dùng !!!' })
+                return res.status(400).json({ error: true, message: 'Phiên đăng nhập hết hạn !!!' })
             }
-        } else {
-            res.status(400).json({ error: true, message: 'Failed to valid token !!!' })
-        }
-    } catch (err) { res.status(500).json({ error: true, message: 'Lỗi xác thực token !!!' }) }
+        } catch (err) { return res.status(500).json({ error: true, message: 'Error xác thực phiên đăng nhập !!!' }) }
+    }
 }

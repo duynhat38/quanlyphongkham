@@ -2,12 +2,12 @@ var jwt = require('jsonwebtoken');
 var config = require('./../config');
 
 module.exports = {
-    encode: function(payload) {
-        var token = jwt.sign(payload, config.secretKey, { expiresIn: '7d' });
+    encode: async function(payload) {
+        var token = await jwt.sign(payload, config.secretKey, { expiresIn: '1d' });
         return token;
     },
-    decode: function(token) {
-        var res = jwt.verify(token, config.secretKey, function(err, decoded) {
+    decode: async function(token) {
+        var res = await jwt.verify(token, config.secretKey, function(err, decoded) {
             if (err) {
                 return { success: false, message: 'Failed to authenticate token.' };
             } else {

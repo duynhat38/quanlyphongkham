@@ -3,7 +3,9 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "nodemon ./bin/www"
+        "start": "nodemon ./bin/www",
+        "import": "node ./seed -i",
+        "remove": "node ./seed -d"
     },
     "dependencies": {
         "bcrypt": "^5.0.1",
@@ -16,6 +18,7 @@
         "express-rate-limit": "^5.5.1",
         "http-errors": "~1.6.3",
         "jsonwebtoken": "^8.5.1",
+        "moment": "^2.29.3",
         "mongoose": "^6.1.2",
         "morgan": "~1.9.1",
         "nodemailer": "^6.7.2",

@@ -1,16 +1,31 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store/store'
+
 //middleware
 import auth from '@/middleware/auth';
 import log from '@/middleware/log';
 // end
-import AuthLayout from "@/components/Layout/Auth.vue";
-import Login from "@/components/Login.vue";
-import Signup from "@/components/Signup.vue";
-import ForgotPassword from "@/components/ForgotPassword.vue";
-import ChangePassword from "@/components/ChangePassword.vue";
-import ResetPassword from "@/components/ResetPassword.vue";
-import Home from "@/components/Home.vue";
+import AuthLayout from "@/pages/Layout/Auth.vue";
+import HomeLayout from "@/pages/Layout/Home.vue";
+import IndexLayout from "@/pages/Layout/Index.vue";
+
+import Login from "@/pages/Login.vue";
+import Signup from "@/pages/Signup.vue";
+import ForgotPassword from "@/pages/ForgotPassword.vue";
+import ChangePassword from "@/pages/ChangePassword.vue";
+import ResetPassword from "@/pages/ResetPassword.vue";
+
+import Home from "@/pages/Home.vue";
+import QuanLyNguoiDung from "@/pages/QuanLyNguoiDung.vue";
+import QuanLyBenhNhan from "@/pages/QuanLyBenhNhan.vue";
+import QuanLyPhongKham from "@/pages/QuanLyPhongKham.vue";
+import QuanLyLichKham from "@/pages/QuanLyLichKham.vue";
+import QuanLyDichVu from "@/pages/QuanLyDichVu.vue";
+import KhamChuaBenh from "@/pages/KhamChuaBenh.vue";
+
+import Index from "@/pages/Index.vue";
+import VeryBooking from "@/pages/VeryBooking.vue";
 
 Vue.use(Router)
 
@@ -24,6 +39,13 @@ let authPages = {
             component: Login,
             meta: {
                 middleware: log
+            },
+            beforeEnter: (to, from, next) => {
+                if (store.state.token != null && store.state.token != undefined) {
+                    next('/home');
+                } else {
+                    next();
+                }
             }
         },
         {
@@ -61,29 +83,98 @@ let authPages = {
     ]
 };
 
-const router = new Router({
-    mode: 'history',
-    routes: [{
-            path: "/",
-            redirect: "/home",
+let homePages = {
+    path: "/",
+    component: HomeLayout,
+    name: "Home",
+    children: [{
+            path: "/home",
+            name: "Home",
+            component: Home,
             meta: {
                 middleware: [auth, log]
             }
         },
-        authPages,
         {
-            path: "/",
-            component: AuthLayout,
-            children: [{
-                path: "home",
-                name: "Home",
-                components: { default: Home },
-                meta: {
-                    middleware: [auth, log]
-                }
-            }, ]
+            path: "/quanlynguoidung",
+            name: "QuanLyNguoiDung",
+            component: QuanLyNguoiDung,
+            meta: {
+                middleware: [auth, log]
+            }
         },
         {
+            path: "/quanlybenhnhan",
+            name: "QuanLyBenhNhan",
+            component: QuanLyBenhNhan,
+            meta: {
+                middleware: [auth, log]
+            }
+        },
+        {
+            path: "/quanlyphongkham",
+            name: "QuanLyPhongKham",
+            component: QuanLyPhongKham,
+            meta: {
+                middleware: [auth, log]
+            }
+        },
+        {
+            path: "/quanlydichvu",
+            name: "QuanLyDichVu",
+            component: QuanLyDichVu,
+            meta: {
+                middleware: [auth, log]
+            }
+        },
+        {
+            path: "/quanlylichkham",
+            name: "QuanLyLichKham",
+            component: QuanLyLichKham,
+            meta: {
+                middleware: [auth, log]
+            }
+        },
+        {
+            path: "/khamchuabenh",
+            name: "KhamChuaBenh",
+            component: KhamChuaBenh,
+            meta: {
+                middleware: [auth, log]
+            }
+        },
+    ]
+};
+
+let indexPages = {
+    path: "/",
+    component: IndexLayout,
+    name: "IndexLayout",
+    children: [{
+            path: "/",
+            name: "Index",
+            component: Index,
+            meta: {
+                middleware: [log]
+            }
+        },
+        {
+            path: "/very-booking/:bookingId/:token",
+            name: "VeryBooking",
+            component: VeryBooking,
+            meta: {
+                middleware: [log]
+            }
+        },
+    ]
+};
+
+const router = new Router({
+    mode: 'history',
+    routes: [
+        indexPages,
+        authPages,
+        homePages, {
             path: '*',
             redirect: "/"
         }

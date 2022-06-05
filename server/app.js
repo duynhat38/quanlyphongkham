@@ -9,8 +9,15 @@ const rateLimit = require("express-rate-limit");
 const db = require('./db/connect');
 const AuthMiddleware = require('./middlewares/middlewares.auth');
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
+var usersRouter = require('./routes/users');
+var clinicsRouter = require('./routes/clinics');
+var specialtiesRouter = require('./routes/specialties');
+var allcodesRouter = require('./routes/allcodes');
+var bookingsRouter = require('./routes/bookings');
+var servicesRouter = require('./routes/services');
+var patientsRouter = require('./routes/patients');
+
 var app = express();
 
 // view engine setup
@@ -33,6 +40,12 @@ const authApiLimiter = rateLimit({
 app.use('/', indexRouter);
 app.use('/auth', authApiLimiter, authRouter);
 app.use('/users', usersRouter);
+app.use('/clinics', clinicsRouter);
+app.use('/specialties', specialtiesRouter);
+app.use('/allcodes', allcodesRouter);
+app.use('/bookings', bookingsRouter);
+app.use('/services', servicesRouter);
+app.use('/patients', patientsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

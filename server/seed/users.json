@@ -1,0 +1,25 @@
+[{
+        "email": "duynhatit38@gmail.com",
+        "password": "Nhat@123456",
+        "fullname": "Nguyễn Duy Nhật",
+        "role": "admin"
+    },
+    {
+        "email": "bacsi1@gmail.com",
+        "password": "Abc@123456",
+        "fullname": "Bác Sĩ 1",
+        "role": "bacsi"
+    },
+    {
+        "email": "duocsi1@gmail.com",
+        "password": "Abc@123456",
+        "fullname": "Dược Sĩ 1",
+        "role": "duocsi"
+    },
+    {
+        "email": "tieptan1@gmail.com",
+        "password": "Abc@123456",
+        "fullname": "Tiếp Tân 1",
+        "role": "tieptan"
+    }
+]
