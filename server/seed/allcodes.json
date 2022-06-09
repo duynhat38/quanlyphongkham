@@ -1,0 +1,46 @@
+[{
+        "type": "ROLE",
+        "key": "admin",
+        "value": "Quản trị viên"
+    },
+    {
+        "type": "ROLE",
+        "key": "bacsi",
+        "value": "Bác sĩ"
+    },
+    {
+        "type": "ROLE",
+        "key": "duocsi",
+        "value": "Dược sĩ"
+    },
+    {
+        "type": "ROLE",
+        "key": "tieptan",
+        "value": "Tiếp tân"
+    },
+    {
+        "type": "STATUS",
+        "key": "New",
+        "value": "Lịch hẹn mới"
+    },
+    {
+        "type": "STATUS",
+        "key": "Confirmed",
+        "value": "Đã xác nhận"
+    },
+    {
+        "type": "STATUS",
+        "key": "Wait",
+        "value": "Chờ khám"
+    },
+    {
+        "type": "STATUS",
+        "key": "Done",
+        "value": "Đã khám xong"
+    },
+    {
+        "type": "STATUS",
+        "key": "Cancel",
+        "value": "Đã huỷ"
+    }
+]
